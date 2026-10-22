@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Key Generated | FOX ONE</title>
+    <style>
+        :root { --bg: #000000; --card: #121212; --text: #ffffff; --accent: #00ff88; --error: #ff4444; }
+        
+        body { 
+            background-color: var(--bg); 
+            color: var(--text); 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container { 
+            width: 100%; 
+            max-width: 400px; 
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        /* --- UI Visibility Controls --- */
+        #mainContainer { display: none; }
+        #bypassContainer { display: none; }
+
+        /* --- BYPASS ERROR CARD --- */
+        .error-card { 
+            background: #1a0a0a; 
+            border: 1px solid #441111; 
+            border-radius: 28px; 
+            padding: 40px 30px; 
+            box-shadow: 0 10px 40px rgba(255,0,0,0.1);
+        }
+        .error-icon { font-size: 50px; margin-bottom: 20px; }
+        .error-title { color: var(--error); font-size: 24px; font-weight: bold; margin-bottom: 15px; }
+
+        .key-icon { 
+            background: #1a1a1a; 
+            width: 85px; 
+            height: 85px; 
+            border-radius: 50%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            margin: -45px auto 15px; 
+            border: 1px solid #333; 
+            overflow: hidden; 
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+
+        .key-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @media (min-width: 768px) {
+            .container { max-width: 450px; }
+            .key-icon { width: 110px; height: 110px; margin: -55px auto 20px; }
+        }
+
+        h1 { font-size: 28px; font-weight: bold; margin-bottom: 8px; }
+        .subtitle { color: #888; font-size: 14px; margin-bottom: 30px; }
+
+        .card { 
+            background: var(--card); 
+            border: 1px solid #222; 
+            border-radius: 28px; 
+            padding: 40px 30px 30px; 
+            text-align: center; 
+            box-shadow: 0 15px 50px rgba(0,0,0,0.6); 
+            position: relative;
+        }
+
+        h2 { font-size: 22px; margin-bottom: 12px; color: var(--accent); font-weight: 700; }
+        .card-p { color: #999; font-size: 14px; line-height: 1.6; margin-bottom: 25px; }
+
+        .key-box { 
+            background: #000; 
+            padding: 22px; 
+            border-radius: 18px; 
+            border: 1px dashed var(--accent); 
+            margin-bottom: 25px; 
+            position: relative; 
+            overflow: hidden; 
+        }
+        
+        #finalKey { 
+            color: var(--accent); 
+            font-family: 'Courier New', monospace; 
+            font-size: 19px; 
+            font-weight: bold; 
+            letter-spacing: 1px; 
+        }
+        
+        .btn { 
+            width: 100%; 
+            padding: 18px; 
+            background: #ffffff; 
+            color: #000; 
+            border: none; 
+            border-radius: 16px; 
+            font-size: 16px; 
+            font-weight: 800; 
+            cursor: pointer; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        }
+
+        .btn:hover { 
+            transform: scale(1.03); 
+            background: var(--accent); 
+            box-shadow: 0 10px 20px rgba(0,255,136,0.2);
+        }
+
+        .btn-red { background: var(--error); color: white; margin-top: 20px; }
+
+        .footer { 
+            margin-top: 80px; 
+            color: #333; 
+            font-size: 10px; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            font-weight: bold; 
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="mainContainer">
+        <div class="key-icon">
+            <img src="./assets/logo.png" alt="UKM">
+        </div>
+
+        <h1>Access Unlocked</h1>
+        <p class="subtitle">Your device-locked license key is ready.</p>
+
+        <div class="card">
+            <h2>Generation Success!</h2>
+            <p class="card-p">This key is locked to your device. Share it, and it won't work for others.</p>
+
+            <div class="key-box">
+                <span id="finalKey">SECURE FETCHING...</span>
+            </div>
+
+            <button class="btn" id="copyBtn" onclick="copyKey()">
+                COPY TO CLIPBOARD
+            </button>
+        </div>
+    </div>
+
+    <div id="bypassContainer">
+        <div class="error-card">
+            <div class="error-icon">🚫</div>
+            <div class="error-title">Bypass Detected!</div>
+            <p style="color:#888; font-size: 14px; line-height: 1.5;">Direct access is prohibited. Please use the official link from the script to generate your key.</p>
+            <button class="btn btn-red" onclick="location.href='steps.html'">RETURN TO STEPS</button>
+        </div>
+    </div>
+
+    <div class="footer">FOX ONE SECURITY SYSTEM</div>
+</div>
+
+<script>
+    async function checkSecurity() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const source = urlParams.get('source');
+        
+        console.log('=== Security Check ===');
+        console.log('Source:', source);
+        console.log('Referrer:', document.referrer);
+        console.log('==================');
+
+        const isAllowed = source === "official";
+        
+        if (isAllowed) {
+            const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            window.history.replaceState({}, document.title, cleanUrl);
+            
+            document.getElementById('mainContainer').style.display = "block";
+            document.getElementById('bypassContainer').style.display = "none";
+            
+            generateLockedKey(); 
+        } else {
+            // BLOCK: Direct access, no VPLink
+            document.getElementById('mainContainer').style.display = "none";
+            document.getElementById('bypassContainer').style.display = "block";
+        }
+    }
+
+    async function generateLockedKey() {
+    try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        const ip = data.ip;
+
+        // Aaj ki Date (Daily expiry ke liye)
+        const day = Math.floor(Date.now() / 86400000);
+        const ipSeed = parseInt(ip.replace(/\./g, '').substring(0, 6)); 
+        
+        // Seed: IP + Date + Year (Ye App se match hona chahiye)
+        let seed = ipSeed + day + 2026; 
+        
+        function rnd() { 
+            var x = Math.sin(seed++) * 10000; 
+            return Math.abs(x - Math.floor(x)); 
+        }
+        
+        const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        let segments = [];
+        for(let i=0; i<4; i++) {
+            let s = "";
+            for(let j=0; j<4; j++) {
+                let r = Math.floor(rnd() * chars.length);
+                s += chars.charAt(r);
+            }
+            segments.push(s);
+        }
+
+        const finalKey = "FOXVPN-" + segments.join("-");
+        document.getElementById('finalKey').innerText = finalKey;
+
+    } catch (err) {
+        document.getElementById('finalKey').innerText = "CONNECT TO INTERNET";
+    }
+}
+
+
+
+    function copyKey() {
+        const keyText = document.getElementById('finalKey').innerText;
+        if(keyText.includes("SECURE") || keyText.includes("CONNECT")) return;
+
+        navigator.clipboard.writeText(keyText).then(() => {
+            const btn = document.getElementById('copyBtn');
+            btn.innerText = "COPIED SUCCESSFULLY! ✅";
+            btn.style.background = "#00ff88";
+            setTimeout(() => { 
+                btn.innerText = "COPY TO CLIPBOARD"; 
+                btn.style.background = "#ffffff";
+            }, 2000);
+        });
+    }
+
+    window.onload = checkSecurity;
+</script>
+</body>
+</html>
